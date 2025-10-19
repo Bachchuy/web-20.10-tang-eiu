@@ -1,6 +1,14 @@
 <!DOCTYPE html>
 <html lang="vi">
 <head>
+    <!--
+      Baby.html — Trang quà tặng 20/10 💌
+      Cấu trúc gồm 3 stage:
+        1) Stage 1: Prompt mở đầu (click để bắt đầu)
+        2) Stage 2: Slideshow ảnh (click để chuyển ảnh)
+        3) Stage 3: Lời chúc (hiệu ứng gõ chữ)
+      Ghi chú: Mọi style xem trong styles.css (có mục lục rõ ràng)
+    -->
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Quà Tặng 20/10 Đặc Biệt 💌</title>
@@ -31,7 +39,7 @@
     <div id="stage1" class="stage active">
         <div id="stage1-content">
             <p id="prompt-text">
-                Tớ có món quà cho cậu nè 💌
+                Tớ có món quà cho cậu nè <span class="emoji" aria-label="lá thư">💌</span>
             </p>
         </div>
     </div>
@@ -39,15 +47,11 @@
     <!-- 2. Giai đoạn 2: Slideshow và Hiệu ứng -->
     <div id="stage2" class="stage">
         <div id="slideshow-container">
-            <!-- CHÚ Ý: Thay thế các URL placeholder này bằng ảnh của người yêu bạn -->
             <div class="slide current"><img src="Ảnh/img1.jpg" alt="Ảnh 1"></div>
             <div class="slide"><img src="Ảnh/img2.jpg" alt="Ảnh 2"></div>
             <div class="slide"><img src="Ảnh/img3.jpg" alt="Ảnh 3"></div>
             <div class="slide"><img src="Ảnh/img4.jpg" alt="Ảnh 4"></div>
             <div class="slide"><img src="Ảnh/img5.jpg" alt="Ảnh 5"></div>
-
-            <img src="Ảnh/img2.jpg" alt="Ảnh 2">
-    
         </div>
     </div>
 
@@ -79,7 +83,6 @@
         const audio = document.getElementById('bgsound');
         const slides = document.querySelectorAll('#slideshow-container .slide');
         let currentSlide = 0;
-        let slideshowInterval;
         let particleInterval;
 
         // Lời chúc cuối cùng
