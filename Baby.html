@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quà Tặng 20/10 Đặc Biệt 💌</title>
+    <!-- Tải Google Fonts: Playfair Display (cho tiêu đề) và Poppins (cho nội dung) -->
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Poppins:wght@300;400;700&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400..700&display=swap" rel="stylesheet">
+    
+    <!-- Link đến file CSS riêng -->
+    <link rel="stylesheet" href="styles.css">
+    
+    <!-- Preload ảnh để tải trước, giảm thời gian chờ -->
+    <link rel="preload" as="image" href="Ảnh/img1.jpg">
+    <link rel="preload" as="image" href="Ảnh/img2.jpg">
+    <link rel="preload" as="image" href="Ảnh/img3.jpg">
+    <link rel="preload" as="image" href="Ảnh/img4.jpg">
+    <link rel="preload" as="image" href="Ảnh/img5.jpg">
+    
+</head>
+<body>
+
+    <!-- ========================================================================= -->
+    <!-- PHẦN HTML STRUCTURE -->
+    <!-- ========================================================================= -->
+
+    <!-- 1. Giai đoạn 1: Màn hình Prompt -->
+    <div id="stage1" class="stage active">
+        <div id="stage1-content">
+            <p id="prompt-text">
+                Tớ có món quà cho cậu nè 💌
+            </p>
+        </div>
+    </div>
+
+    <!-- 2. Giai đoạn 2: Slideshow và Hiệu ứng -->
+    <div id="stage2" class="stage">
+        <div id="slideshow-container">
+            <!-- CHÚ Ý: Thay thế các URL placeholder này bằng ảnh của người yêu bạn -->
+            <div class="slide current"><img src="Ảnh/img1.jpg" alt="Ảnh 1"></div>
+            <div class="slide"><img src="Ảnh/img2.jpg" alt="Ảnh 2"></div>
+            <div class="slide"><img src="Ảnh/img3.jpg" alt="Ảnh 3"></div>
+            <div class="slide"><img src="Ảnh/img4.jpg" alt="Ảnh 4"></div>
+            <div class="slide"><img src="Ảnh/img5.jpg" alt="Ảnh 5"></div>
+
+            <img src="Ảnh/img2.jpg" alt="Ảnh 2">
+    
+        </div>
+    </div>
+
+    <!-- 3. Giai đoạn 3: Lời Chúc Cuối cùng -->
+    <div id="stage3" class="stage">
+        <div id="final-message-box">
+            <div id="typing-area">
+                <!-- Nội dung sẽ được chèn bằng JS -->
+            </div>
+            <p class="signature">— từ Hà Quốc Khánh ❤️❤️❤️</p>
+        </div>
+    </div>
+
+    <!-- Nhạc nền (Sẽ được phát bằng JS sau khi click) -->
+    <audio id="bgsound" loop>
+        <!-- THAY THẾ DÒNG NÀY BẰNG LINK MP3 CỦA BẠN -->
+        <source src="Anhdanhroinguoiyeunay.mp3" type="audio/mp3">
+    </audio>
+
+    <!-- ========================================================================= -->
+    <!-- PHẦN JAVASCRIPT LOGIC -->
+    <!-- Sử dụng JS để điều khiển tương tác và thời gian -->
+    <!-- ========================================================================= -->
+    <script>
+        const stage1 = document.getElementById('stage1');
+        const stage2 = document.getElementById('stage2');
+        const stage3 = document.getElementById('stage3');
+        const stage1Content = document.getElementById('stage1-content');
+        const audio = document.getElementById('bgsound');
+        const slides = document.querySelectorAll('#slideshow-container .slide');
+        let currentSlide = 0;
+        let slideshowInterval;
+        let particleInterval;
+
+        // Lời chúc cuối cùng
+        const finalMessage = [
+            "Chúc cậu 20/10 thật rạng rỡ, lung linh 💐",
+            "ngày càng xinh đẹp hơn nữa và nhớ cười nhiều hơn nhaaa.",
+            "Từ khi cậu xuất hiện, cuộc sống của tớ có thêm nhiều màu sắc hơn  🌸",
+            "Cảm ơn cậu đã bước đến bên tớ!"
+        ];
+
+        /* --- Hàm Xử lý Chuyển Stage (Stage Manager) --- */
+        function setStage(stageId) {
+            document.querySelectorAll('.stage').forEach(stage => {
+                stage.classList.remove('active');
+            });
+            document.getElementById(stageId).classList.add('active');
+        }
+
+        /* --- Hiệu ứng Hoa Rơi (Petal Particles) --- */
+        const petalEmojis = ['🌸', '🌹', '💖', '✨'];
+        function createPetal() {
+            const petal = document.createElement('div');
+            petal.classList.add('petal');
+            
+            const emoji = petalEmojis[Math.floor(Math.random() * petalEmojis.length)];
+            
+            petal.innerHTML = `<span class="petal-icon" style="font-size: ${Math.random() * 15 + 15}px">${emoji}</span>`;
+            
+            // Vị trí bắt đầu, độ trễ, và hiệu ứng lắc lư ngẫu nhiên (sử dụng CSS Variable)
+            petal.style.left = `${Math.random() * 100}vw`;
+            petal.style.animationDuration = `${Math.random() * 10 + 8}s`; 
+            petal.style.animationDelay = `${Math.random() * 5}s`; 
+            petal.style.setProperty('--sway', (Math.random() * 2 - 1).toFixed(2)); /* -1 đến 1 cho hiệu ứng lắc lư */
+            
+            document.body.appendChild(petal);
+
+            // Dọn dẹp sau 20 giây để tránh tràn DOM
+            setTimeout(() => {
+                petal.remove();
+            }, 20000); 
+        }
+
+        function startParticleEffect() {
+            // Tạo một cánh hoa/hiệu ứng mỗi 300ms
+            if (!particleInterval) {
+                particleInterval = setInterval(createPetal, 300); 
+            }
+        }
+
+        function stopParticleEffect() {
+            clearInterval(particleInterval);
+            particleInterval = null;
+            // Làm mờ và xóa tất cả các hạt hiện có
+            document.querySelectorAll('.petal').forEach(p => {
+                p.style.transition = 'opacity 1s';
+                p.style.opacity = '0';
+                setTimeout(() => p.remove(), 1000);
+            });
+        }
+
+
+        /* --- Hiệu ứng Slideshow --- */
+        // GIẢI THÍCH: Hàm này hiển thị ảnh tại vị trí 'index'
+        function showSlide(index) {
+            slides.forEach((slide, i) => {
+                // Duyệt qua tất cả các slide
+                // Nếu index của slide = index cần hiển thị → thêm class 'current'
+                // Nếu không → xóa class 'current'
+                if (i === index) {
+                    slide.classList.add('current');
+                } else {
+                    slide.classList.remove('current');
+                }
+            });
+        }
+
+        // GIẢI THÍCH: Hàm chuyển sang ảnh tiếp theo khi click
+        function nextSlide() {
+            // Tăng currentSlide lên 1
+            currentSlide++;
+            
+            // Kiểm tra: Nếu đã đến ảnh cuối cùng?
+            if (currentSlide >= slides.length) {
+                // Đã hết ảnh → Chuyển sang stage 3 (lời chúc)
+                stopParticleEffect();
+                handleStage3Reveal();
+            } else {
+                // Còn ảnh → Hiển thị ảnh tiếp theo
+                showSlide(currentSlide);
+            }
+        }
+
+        // GIẢI THÍCH: Hàm khởi động slideshow (hiển thị ảnh đầu tiên)
+        function startSlideshow() {
+            // Hiển thị ảnh đầu tiên (index = 0)
+            showSlide(currentSlide);
+            
+            // Gắn sự kiện click vào container để chuyển ảnh
+            const slideshowContainer = document.getElementById('slideshow-container');
+            slideshowContainer.addEventListener('click', nextSlide);
+            
+            // Thêm con trỏ pointer để người dùng biết có thể click
+            slideshowContainer.style.cursor = 'pointer';
+        }
+
+        /* --- Hiệu ứng Typing cho Lời Chúc --- */
+        async function typeLine(lineElement, text) {
+            let i = 0;
+            return new Promise(resolve => {
+                const typingTimer = setInterval(() => {
+                    if (i < text.length) {
+                        lineElement.textContent += text.charAt(i);
+                        i++;
+                    } else {
+                        clearInterval(typingTimer);
+                        lineElement.style.borderRight = 'none'; // Ẩn con trỏ sau khi gõ xong
+                        resolve();
+                    }
+                }, 70); // Tốc độ gõ 70ms/ký tự
+            });
+        }
+
+        async function startTypingEffect() {
+            const typingArea = document.getElementById('typing-area');
+            
+            for (let i = 0; i < finalMessage.length; i++) {
+                const text = finalMessage[i];
+                const lineElement = document.createElement('p');
+                lineElement.classList.add('message-line');
+                typingArea.appendChild(lineElement);
+                
+                await typeLine(lineElement, text);
+                
+                // Giữ con trỏ nhấp nháy ở dòng cuối cùng
+                if (i < finalMessage.length - 1) {
+                    lineElement.style.borderRight = '.15em solid var(--primary-pink)';
+                    await new Promise(r => setTimeout(r, 1000)); // Chờ 1 giây giữa các dòng
+                    lineElement.style.borderRight = 'none';
+                }
+            }
+        }
+
+
+        /* --- Xử lý Chuyển Giai đoạn Cuối --- */
+        function handleStage3Reveal() {
+            setStage('stage3');
+            startTypingEffect();
+        }
+
+        /* --- Xử lý Click ban đầu (điều kiện để phát nhạc) --- */
+        function handleInitialClick() {
+            // 1. Phát nhạc nền
+            audio.play().catch(e => console.error('Audio playback failed:', e));
+            
+            // 2. Chuyển sang Stage 2 (Slideshow)
+            setStage('stage2');
+            
+            // 3. Kích hoạt hiệu ứng Particles
+            startParticleEffect();
+
+            // 4. Bắt đầu Slideshow
+            startSlideshow();
+
+            // Gỡ bỏ listener sau lần click đầu tiên
+            stage1Content.removeEventListener('click', handleInitialClick);
+        }
+        
+        // Gắn sự kiện click vào nội dung Stage 1
+        stage1Content.addEventListener('click', handleInitialClick);
+
+    </script>
+</body>
+</html>
