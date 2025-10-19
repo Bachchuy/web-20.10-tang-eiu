@@ -271,19 +271,21 @@
                 'Ảnh/img9.jpg'
             ];
 
-            function createFallingLetter() {
-                const letter = document.createElement('img');
-                const randomImage = fallingImages[Math.floor(Math.random() * fallingImages.length)];
-                letter.src = randomImage;
-                letter.classList.add('falling-letter');
-                letter.style.left = Math.random() * (window.innerWidth - 50) + 'px';
-                document.body.appendChild(letter);
-                setTimeout(() => {
-                    letter.remove();
-                }, 8000);
+            function createFallingLetter(quantity = 3) {
+                for (let i = 0; i < quantity; i++) {
+                    const letter = document.createElement('img');
+                    const randomImage = fallingImages[Math.floor(Math.random() * fallingImages.length)];
+                    letter.src = randomImage;
+                    letter.classList.add('falling-letter');
+                    letter.style.left = Math.random() * (window.innerWidth - 50) + 'px';
+                    document.body.appendChild(letter);
+                    setTimeout(() => {
+                        letter.remove();
+                    }, 8000);
+                }
             }
 
-            setInterval(createFallingLetter, 1200); // Tạo ảnh rơi mỗi 1.2 giây
+            setInterval(() => createFallingLetter(3), 600); // Mỗi 0.6 giây tạo 3 ảnh rơi
 
     </script>
 </body>
