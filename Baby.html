@@ -65,6 +65,8 @@
             // --- Dữ liệu của Chan (Người yêu) ---
             "chan": { // Link sẽ là: ?nguoi=chan
                 ten: "Bé Chan",
+                nguoiGui: "Hà Quốc Khánh",
+                chuKy: "— từ Hà Quốc Khánh ❤️❤️❤️",
                 prompt: "Tớ có món quà cho cậu nè <span class=\"emoji\" aria-label=\"lá thư\">💌</span>",
                 loiChuc: [
                     "Chúc cậu 20/10 thật rạng rỡ, lung linh 💐",
@@ -86,9 +88,11 @@
             },
             "ngoc": { // Link sẽ là: ?nguoi=ngoc
                 ten: "Bé Ngọc",
+                nguoiGui: "Lê Văn Ngọc",
+                chuKy: "— từ Lê Văn Ngọc ❤️",
                 prompt: "Anh có món quà cho em <span class=\"emoji\" aria-label=\"lá thư\">💌</span>",
                 loiChuc: [
-                    "Chúc cậu 20/10 thật rạng rỡ, lung linh 💐",
+                    "Chúc em 20/10 thật rạng rỡ, lung linh 💐",
                     "Em mãi là bông hoa xinh đẹp rạng ngời trong cuộc đời anh.",
                     "Anh yêu em  🌸",
                     "Cảm ơn em đã xuất hiện bên anh!"
@@ -101,6 +105,8 @@
             // --- Dữ liệu của Linh (Em gái) ---
             "linh": { // Link sẽ là: ?nguoi=linh
                 ten: "Em gái Linh",
+                nguoiGui: "Anh Khánh",
+                chuKy: "— từ Anh Khánh ❤️❤️❤️",
                 prompt: "Anh có món quà cho em nè <span class=\"emoji\" aria-label=\"lá thư\">💌</span>",
                 loiChuc: [
                     "Chúc em gái 20/10 vui vẻ, lạc quan và ngày càng xinh đẹp nhaaaa!",
@@ -117,6 +123,8 @@
             },
             "thu": { // Link sẽ là: ?nguoi=thu
                 ten: "ban Thu",
+                nguoiGui: "Khánh",
+                chuKy: "— từ Khánh ❤️❤️❤️",
                 prompt: "Tớ có món quà cho cậu nè <span class=\"emoji\" aria-label=\"lá thư\">💌</span>",
                 loiChuc: [
                     "Chúc cậu 20/10 thật rạng rỡ, lung linh 💐",
@@ -157,10 +165,16 @@
         const audio = document.getElementById('bgsound');
         const slideshowContainer = document.getElementById('slideshow-container');
         const promptTextElem = document.getElementById('prompt-text');
+        const signatureElem = document.querySelector('.signature');
 
         // Gán prompt cá nhân hóa vào phần tử #prompt-text
         if (promptTextElem) {
             promptTextElem.innerHTML = promptText;
+        }
+
+        // Gán chữ ký cá nhân hóa vào phần tử .signature
+        if (signatureElem && thongTin.chuKy) {
+            signatureElem.textContent = thongTin.chuKy;
         }
 
         let slides; 
