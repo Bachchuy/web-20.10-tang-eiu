@@ -52,6 +52,10 @@
             <div class="slide"><img src="Ảnh/img3.jpg" alt="Ảnh 3"></div>
             <div class="slide"><img src="Ảnh/img4.jpg" alt="Ảnh 4"></div>
             <div class="slide"><img src="Ảnh/img5.jpg" alt="Ảnh 5"></div>
+            <div class="slide"><img src="Ảnh/img6.jpg" alt="Ảnh 6"></div>
+            <div class="slide"><img src="Ảnh/img7.jpg" alt="Ảnh 7"></div>
+            <div class="slide"><img src="Ảnh/img8.jpg" alt="Ảnh 8"></div>
+            <div class="slide"><img src="Ảnh/img9.jpg" alt="Ảnh 9"></div>   
         </div>
     </div>
 
@@ -252,6 +256,34 @@
         
         // Gắn sự kiện click vào nội dung Stage 1
         stage1Content.addEventListener('click', handleInitialClick);
+
+            // Hiệu ứng hoa/thư/ảnh rơi tự động
+            // Thay các đường dẫn ảnh bên dưới bằng ảnh hoa/thư bạn muốn
+            const fallingImages = [
+                'Ảnh/img1.jpg',
+                'Ảnh/img2.jpg',
+                'Ảnh/img3.jpg',
+                'Ảnh/img4.jpg',
+                'Ảnh/img5.jpg',
+                'Ảnh/img6.jpg',
+                'Ảnh/img7.jpg',
+                'Ảnh/img8.jpg',
+                'Ảnh/img9.jpg'
+            ];
+
+            function createFallingLetter() {
+                const letter = document.createElement('img');
+                const randomImage = fallingImages[Math.floor(Math.random() * fallingImages.length)];
+                letter.src = randomImage;
+                letter.classList.add('falling-letter');
+                letter.style.left = Math.random() * (window.innerWidth - 50) + 'px';
+                document.body.appendChild(letter);
+                setTimeout(() => {
+                    letter.remove();
+                }, 8000);
+            }
+
+            setInterval(createFallingLetter, 1200); // Tạo ảnh rơi mỗi 1.2 giây
 
     </script>
 </body>
