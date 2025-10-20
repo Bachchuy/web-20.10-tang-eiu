@@ -59,8 +59,10 @@
     <!-- PHẦN JAVASCRIPT LOGIC (ĐÃ CẬP NHẬT) -->
     <!-- ========================================================================= -->
     <script>
-        // --- BƯỚC 1: "DATABASE" CHỨA THÔNG TIN TỪNG NGƯỜI ---
-        const dataNguoiNhan = {
+        // Đảm bảo DOM đã load xong trước khi chạy code
+        document.addEventListener('DOMContentLoaded', function() {
+            // --- BƯỚC 1: "DATABASE" CHỨA THÔNG TIN TỪNG NGƯỜI ---
+            const dataNguoiNhan = {
             
             // --- Dữ liệu của Chan (Người yêu) ---
             "chan": { // Link sẽ là: ?nguoi=chan
@@ -161,6 +163,27 @@
                     "Ảnh/moHuong/mo6.jpg"
                 ]
             },
+            "baby": { // Link sẽ là: ?nguoi=baby
+                ten: "bé",
+                nguoiGui: "Khánh",
+                chuKy: "— từ HQKhánh idol nèee ❤️❤️❤️",
+                prompt: "Mình có món quà cho baby nè <span class=\"emoji\" aria-label=\"lá thư\">💌</span>",
+                loiChuc: [
+                    "Chúc baby 20/10 thật rạng rỡ, lung linh 💐",
+                    "ngày càng xinh đẹp hơn nữa và cười thật nhìu lên nhaaaaa",
+                    "Cảm ơn baby đã làm bạn với mình và mong rằng sau này còn đồng hành hơn nữa!  🌸",
+                    "Love you!😘😘😘"
+                ],
+                danhSachAnh: [
+                    "Ảnh/baby/baby1.jpg",
+                    "Ảnh/baby/baby2.jpg",
+                    "Ảnh/baby/baby3.jpg",
+                    "Ảnh/baby/baby4.jpg",
+                    "Ảnh/baby/baby5.jpg",
+                    "Ảnh/baby/baby6.jpg",
+                    "Ảnh/baby/baby7.jpeg"
+                ]
+            },
 
         };
 
@@ -240,12 +263,26 @@
                 slideshowContainer.innerHTML = "<p>Lỗi: Không tìm thấy ảnh.</p>";
                 return;
             }
+            
+            // Tạo các slide trước
             anhCaNhan.forEach((src, index) => {
                 const slide = document.createElement('div');
                 slide.className = 'slide' + (index === 0 ? ' current' : '');
-                slide.innerHTML = `<img src="${src}" alt="Ảnh ${index + 1}">`;
+                const img = document.createElement('img');
+                img.src = src;
+                img.alt = `Ảnh ${index + 1}`;
+                
+                // Set kích thước container khi ảnh đầu tiên load xong
+                if (index === 0) {
+                    img.onload = function() {
+                        updateContainerSize(this);
+                    };
+                }
+                
+                slide.appendChild(img);
                 slideshowContainer.appendChild(slide);
             });
+            
             slideshowContainer.addEventListener('click', nextSlide);
             slideshowContainer.style.cursor = 'pointer';
         }
@@ -254,6 +291,41 @@
             slides.forEach((slide, i) => {
                 slide.classList.toggle('current', i === index);
             });
+            
+            // Cập nhật kích thước container theo ảnh hiện tại
+            const currentImg = slides[index].querySelector('img');
+            if (currentImg && currentImg.complete) {
+                updateContainerSize(currentImg);
+            } else if (currentImg) {
+                currentImg.onload = function() {
+                    updateContainerSize(this);
+                };
+            }
+        }
+
+        function updateContainerSize(img) {
+            // Điều chỉnh tỷ lệ theo kích thước màn hình
+            const isMobile = window.innerWidth <= 600;
+            const maxWidth = isMobile ? window.innerWidth * 0.95 : window.innerWidth * 0.9;
+            const maxHeight = isMobile ? window.innerHeight * 0.70 : window.innerHeight * 0.8;
+            
+            let width = img.naturalWidth;
+            let height = img.naturalHeight;
+            const aspectRatio = width / height;
+            
+            if (width > maxWidth) {
+                width = maxWidth;
+                height = width / aspectRatio;
+            }
+            if (height > maxHeight) {
+                height = maxHeight;
+                width = height * aspectRatio;
+            }
+            
+            // Thêm transition mượt mà khi thay đổi kích thước
+            slideshowContainer.style.transition = 'width 0.6s ease, height 0.6s ease';
+            slideshowContainer.style.width = Math.round(width) + 'px';
+            slideshowContainer.style.height = Math.round(height) + 'px';
         }
 
         function nextSlide() {
@@ -312,6 +384,22 @@
         
         stage1Content.addEventListener('click', handleInitialClick);
 
+        // Xử lý khi resize/xoay màn hình
+        let resizeTimeout;
+        window.addEventListener('resize', function() {
+            // Chỉ resize slideshow nếu đang ở stage 2
+            if (document.getElementById('stage2').classList.contains('active')) {
+                clearTimeout(resizeTimeout);
+                resizeTimeout = setTimeout(function() {
+                    // Tính lại kích thước container theo ảnh hiện tại
+                    const currentImg = slides[currentSlide].querySelector('img');
+                    if (currentImg && currentImg.naturalWidth) {
+                        updateContainerSize(currentImg);
+                    }
+                }, 250);
+            }
+        });
+
         // =============================
         // HIỆU ỨNG ẢNH RƠI CÁ NHÂN HÓA
         // =============================
@@ -336,13 +424,14 @@
             }
         }
 
-        // Tự động tạo hiệu ứng ảnh rơi liên tục:
-        // - Mỗi 0.6 giây sẽ tạo ra 3 ảnh rơi mới
-        // - Muốn tăng/giảm số lượng ảnh rơi: chỉnh số 3 (số lượng) hoặc 600 (tốc độ)
-        setInterval(() => createFallingLetter(3), 600);
-        // =============================
-        // HẾT HIỆU ỨNG ẢNH RƠI CÁ NHÂN HÓA
-        // =============================
+            // Tự động tạo hiệu ứng ảnh rơi liên tục:
+            // - Mỗi 0.6 giây sẽ tạo ra 3 ảnh rơi mới
+            // - Muốn tăng/giảm số lượng ảnh rơi: chỉnh số 3 (số lượng) hoặc 600 (tốc độ)
+            setInterval(() => createFallingLetter(3), 600);
+            // =============================
+            // HẾT HIỆU ỨNG ẢNH RƠI CÁ NHÂN HÓA
+            // =============================
+        }); // Đóng DOMContentLoaded
     </script>
 </body>
 </html>

@@ -119,14 +119,13 @@ body {
 /* 5) Stage 2 — Slideshow & hiệu ứng ảnh */
 /*Cài đặt cho khung chứa slideshow */
 #slideshow-container {
-    width: 90%;
-    max-width: 600px;
-    aspect-ratio: 3 / 4;
     position: relative;
     overflow: hidden;
     border-radius: 20px;
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
     border: 5px solid var(--primary-pink);
+    margin: 0 auto; /* Căn giữa */
+    /* Kích thước sẽ được set bằng JavaScript */
 }
 /*Cài đặt cho các ảnh trong slideshow */
 .slide {
@@ -138,17 +137,22 @@ body {
     opacity: 0;
     transform: scale(0.95) translateX(5%);
     transition: opacity 1.2s ease-in-out, transform 1.2s ease-in-out;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .slide.current {
     opacity: 1;
-    transform: scale(1.08) translateX(0);
+    transform: scale(1) translateX(0);
 }
 
 .slide img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
+    max-width: 100%;
+    max-height: 100%;
+    width: auto;
+    height: auto;
+    object-fit: contain; /* Giữ nguyên tỷ lệ ảnh */
     display: block;
 }
 
@@ -284,5 +288,26 @@ body {
 @media (max-width: 600px) {
     #prompt-text { font-size: 1.5rem; }
     .message-line { font-size: 1rem; }
-    #slideshow-container { max-width: 90%; }
+    #slideshow-container { 
+        max-width: 95vw; 
+        max-height: 70vh;
+    }
+    .slide.current {
+        transform: scale(1) translateX(0);
+    }
+    #final-message-box {
+        padding: 20px 25px;
+        max-width: 95%;
+    }
+    .signature {
+        font-size: 1.5rem;
+    }
+}
+
+/* Thêm media query cho tablet */
+@media (min-width: 601px) and (max-width: 1024px) {
+    #slideshow-container {
+        max-width: 85vw;
+        max-height: 75vh;
+    }
 }
