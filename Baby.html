@@ -306,8 +306,17 @@
         function updateContainerSize(img) {
             // Điều chỉnh tỷ lệ theo kích thước màn hình
             const isMobile = window.innerWidth <= 600;
-            const maxWidth = isMobile ? window.innerWidth * 0.95 : window.innerWidth * 0.9;
-            const maxHeight = isMobile ? window.innerHeight * 0.70 : window.innerHeight * 0.8;
+            
+            let maxWidth, maxHeight;
+            if (isMobile) {
+                // Mobile: giới hạn chặt chẽ hơn
+                maxWidth = Math.min(window.innerWidth * 0.92, window.innerWidth - 20); // trừ padding/margin
+                maxHeight = Math.min(window.innerHeight * 0.65, window.innerHeight - 150); // trừ header/footer
+            } else {
+                // Desktop: giữ nguyên như cũ
+                maxWidth = window.innerWidth * 0.9;
+                maxHeight = window.innerHeight * 0.8;
+            }
             
             let width = img.naturalWidth;
             let height = img.naturalHeight;

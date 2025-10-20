@@ -286,21 +286,35 @@ body {
 
 /* 9) Responsive — điều chỉnh kích thước chữ & khung ảnh trên mobile */
 @media (max-width: 600px) {
+    body {
+        overflow-x: hidden; /* Ngăn scroll ngang */
+    }
+    
     #prompt-text { font-size: 1.5rem; }
-    .message-line { font-size: 1rem; }
+    .message-line { font-size: 1.2rem; line-height: 1.6; }
+    
     #slideshow-container { 
-        max-width: 95vw; 
-        max-height: 70vh;
+        max-width: 92vw !important; 
+        max-height: 65vh !important;
+        margin: 0 auto;
     }
+    
     .slide.current {
-        transform: scale(1) translateX(0);
+        transform: scale(1) translateX(0) !important;
     }
+    
+    .slide img {
+        max-width: 100% !important;
+        max-height: 100% !important;
+        object-fit: contain !important;
+    }
+    
     #final-message-box {
         padding: 20px 25px;
         max-width: 95%;
     }
     .signature {
-        font-size: 1.5rem;
+        font-size: 1.6rem;
     }
 }
 
